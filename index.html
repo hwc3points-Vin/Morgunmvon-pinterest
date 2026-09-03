@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A simple workspace for planning MORGUNMVON Pinterest content."
+    />
+    <title>MORGUNMVON Pinterest Content Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="MORGUNMVON home">MORGUNMVON</a>
+      <p class="edition">Pinterest Content Studio <span>V1</span></p>
+    </header>
+
+    <main id="top">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Content direction / Pinterest</p>
+        <h1 id="page-title">Build a considered<br />product story.</h1>
+        <p class="intro-copy">
+          Define the product and its setting. The studio will shape your notes
+          into a clear starting point for Pinterest.
+        </p>
+      </section>
+
+      <form id="content-form">
+        <section class="studio-section" aria-labelledby="product-heading">
+          <div class="section-heading">
+            <p class="section-number">01</p>
+            <div>
+              <h2 id="product-heading">Product Information</h2>
+              <p>The essential details of the piece.</p>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <label>
+              <span>Product ID</span>
+              <input name="productId" type="text" placeholder="e.g. MM-001" required />
+            </label>
+            <label>
+              <span>Product Type</span>
+              <input name="productType" type="text" placeholder="e.g. Side table" required />
+            </label>
+            <label>
+              <span>Style</span>
+              <input name="style" type="text" placeholder="e.g. Minimalist" required />
+            </label>
+            <label>
+              <span>Name</span>
+              <input name="productName" type="text" placeholder="e.g. Forma" required />
+            </label>
+            <label>
+              <span>Number</span>
+              <input name="productNumber" type="text" placeholder="e.g. No. 03" required />
+            </label>
+            <label>
+              <span>Primary Color</span>
+              <input name="primaryColor" type="text" placeholder="e.g. Warm ivory" required />
+            </label>
+            <label>
+              <span>Secondary Color</span>
+              <input name="secondaryColor" type="text" placeholder="e.g. Walnut" required />
+            </label>
+          </div>
+        </section>
+
+        <section class="studio-section" aria-labelledby="scene-heading">
+          <div class="section-heading">
+            <p class="section-number">02</p>
+            <div>
+              <h2 id="scene-heading">Scene Planning</h2>
+              <p>Who it is for, and where it belongs.</p>
+            </div>
+          </div>
+
+          <div class="field-grid field-grid--wide">
+            <label>
+              <span>Target Audience</span>
+              <input
+                name="targetAudience"
+                type="text"
+                placeholder="e.g. Design-conscious apartment dwellers"
+                required
+              />
+            </label>
+            <label>
+              <span>Scene</span>
+              <textarea
+                name="scene"
+                rows="3"
+                placeholder="e.g. A quiet reading corner in soft morning light"
+                required
+              ></textarea>
+            </label>
+          </div>
+        </section>
+
+        <div class="generate-area">
+          <p>Complete sections 01 and 02 to create your content draft.</p>
+          <button type="submit">Generate Content <span aria-hidden="true">→</span></button>
+        </div>
+
+        <section class="studio-section output-section" aria-labelledby="content-heading">
+          <div class="section-heading">
+            <p class="section-number">03</p>
+            <div>
+              <h2 id="content-heading">Pinterest Content</h2>
+              <p>Your generated draft will appear here.</p>
+            </div>
+          </div>
+
+          <div class="output-grid">
+            <div class="output-field output-field--title">
+              <p class="output-label">Title</p>
+              <p id="output-title" class="output-value placeholder-copy">Waiting for your direction…</p>
+            </div>
+            <div class="output-field">
+              <p class="output-label">Description</p>
+              <p id="output-description" class="output-value placeholder-copy">—</p>
+            </div>
+            <div class="output-field">
+              <p class="output-label">Keywords</p>
+              <p id="output-keywords" class="output-value placeholder-copy">—</p>
+            </div>
+            <div class="output-field">
+              <p class="output-label">Image Prompt</p>
+              <p id="output-prompt" class="output-value placeholder-copy">—</p>
+            </div>
+          </div>
+        </section>
+      </form>
+    </main>
+
+    <footer>
+      <p>© MORGUNMVON</p>
+      <p>Content Studio / Version 01</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
