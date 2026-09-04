@@ -14,19 +14,22 @@ const outputs = {
 
 const detailFields = [
   ["Product ID", "productId"],
+  ["Collection", "collection"],
   ["Product Type", "productType"],
-  ["Style", "style"],
-  ["Name", "name"],
-  ["Number", "number"],
+  ["Design ID", "designId"],
   ["Primary Color", "primaryColor"],
   ["Secondary Color", "secondaryColor"],
+  ["Material", "material"],
+  ["Shape", "shape"],
+  ["Print Type", "printType"],
   ["Customization Type", "customizationType"],
+  ["Available Sizes", "availableSizes"],
 ];
 
 function setOptions(select, placeholder, products) {
   select.replaceChildren(new Option(placeholder, ""));
   products.forEach((product) => {
-    select.add(new Option(`${product.name} ${product.number}`, product.productId));
+    select.add(new Option(product.productId, product.productId));
   });
 }
 
@@ -53,10 +56,10 @@ function showProduct(product) {
   if (product.productImage) {
     const image = new Image();
     image.src = product.productImage;
-    image.alt = `${product.name} ${product.number}`;
+    image.alt = `${product.productType}, design ${product.designId}`;
     previewFrame.replaceChildren(image);
   } else {
-    previewFrame.innerHTML = `<span class="preview-mark" aria-hidden="true">${product.number}</span><p>${product.productId}<br>Image coming soon</p>`;
+    previewFrame.innerHTML = `<span class="preview-mark" aria-hidden="true">M</span><p>${product.productId}<br>Image coming soon</p>`;
   }
 }
 
@@ -92,22 +95,24 @@ form.addEventListener("submit", (event) => {
   const data = Object.fromEntries(new FormData(form));
   const product = selectedProduct;
 
-  outputs.title.textContent = `${product.name} ${product.productType} — ${product.style} Living`;
+  outputs.title.textContent = `${data.customName} ${data.customNumber} Personalized Football Pillow`;
   outputs.description.textContent =
-    `Meet ${product.name} ${product.number}, a ${product.style.toLowerCase()} ${product.productType.toLowerCase()} designed for ${data.targetAudience.toLowerCase()}. ` +
-    `Finished in ${product.primaryColor.toLowerCase()} with ${product.secondaryColor.toLowerCase()} details, it brings a considered presence to ${data.scene.toLowerCase()}.`;
+    `Make it personal with the name ${data.customName} and number ${data.customNumber}. ` +
+    `This ${product.shape.toLowerCase()} ${product.productType.toLowerCase()} from the ${product.collection} collection is made from ${product.material.toLowerCase()} with a ${product.printType.toLowerCase()}, designed for ${data.targetAudience.toLowerCase()}. ` +
+    `Design ${product.designId} brings a personal touch to ${data.scene.toLowerCase()}.`;
   outputs.keywords.textContent = [
     product.productType,
-    product.style,
-    product.primaryColor,
-    product.secondaryColor,
-    "interior inspiration",
+    product.collection,
+    product.material,
+    product.customizationType,
+    `custom ${data.customName}`,
+    `number ${data.customNumber}`,
     "MORGUNMVON",
   ].join(" · ");
   outputs.prompt.textContent =
-    `Editorial interior photograph of the MORGUNMVON ${product.name} ${product.productType}, product ID ${product.productId}. ` +
-    `${data.scene}. Focus on a ${product.primaryColor} palette with ${product.secondaryColor} accents. ` +
-    `Quiet ${product.style.toLowerCase()} styling, natural light, refined composition, tactile materials, generous negative space, premium design magazine aesthetic.`;
+    `Editorial product photograph of a MORGUNMVON ${product.shape.toLowerCase()} ${product.productType.toLowerCase()}, product ID ${product.productId}, design ID ${product.designId}. ` +
+    `Show the custom name “${data.customName}” and custom number “${data.customNumber}” clearly on the ${product.printType.toLowerCase()} ${product.material.toLowerCase()} cover. ` +
+    `${data.scene}. Refined composition, tactile detail, generous negative space, premium design magazine aesthetic.`;
 
   Object.values(outputs).forEach((output) => {
     output.classList.remove("placeholder-copy");
