@@ -1,140 +1,132 @@
-# MORGUNMVON Pinterest Content Studio — V1
+# MORGUNMVON Pinterest Content Studio — V2A
 
-这是一个可以直接在浏览器中运行的基础网页原型。它帮助你先填写产品与场景信息，再生成一份 Pinterest 内容示例，方便理解未来接入 AI 后的完整工作流程。
+这是一个可直接在浏览器运行的内容规划网页。V2A 新增 **Product Library（产品资料库）**：先从资料库选择系列和产品，页面便会自动带出产品资料，不再需要逐项手工填写。Scene Planning、Generate Content 和 Pinterest Content 的原有流程保持不变。
 
-> V1 不会连接 OpenAI、Pinterest、数据库或任何第三方服务，也不会上传或保存你填写的内容。刷新或关闭页面后，填写内容就会消失。
+> V2A 不连接 OpenAI、Pinterest、数据库或任何第三方服务，也不包含图片生成和发布功能。所有内容都在当前浏览器内处理，不会上传或保存表单内容。
 
-## 1. 这个项目有哪些文件？
+## 1. Product Library 是什么？
 
-项目只有 4 个主要文件，彼此分工明确：
+Product Library 是产品的统一资料清单。每个产品只需在清单中维护一次，使用网页时即可反复选择。选择 **Collection** 后，**Product** 只会列出该系列中的产品；选择 Product 后，页面会自动展示：
+
+- Product ID
+- Product Type
+- Style
+- Name
+- Number
+- Primary Color
+- Secondary Color
+- Customization Type
+- Product Preview
+
+这些资料是只读展示，不需要使用者重复输入。点击 **Generate Content** 时，原有的示例文案逻辑也会使用当前选中产品的资料。
+
+## 2. 项目文件
 
 ```text
 Morgunmvon-pinterest/
-├── index.html    网页的内容和结构
-├── styles.css    网页的视觉样式
-├── script.js     按钮和示例内容生成逻辑
-└── README.md     你正在阅读的使用说明
+├── index.html     网页结构、选择项和结果区域
+├── styles.css     Premium / Editorial 视觉及响应式布局
+├── products.js    Product Library 产品资料（主要维护此文件）
+├── script.js      产品筛选、资料展示和示例文案逻辑
+└── README.md      使用与维护说明
 ```
 
-### `index.html`
+### 为什么产品资料使用 `products.js`，而不是 CSV？
 
-相当于网页的“骨架”。页面标题、说明文字、所有输入字段、按钮和结果区域都在这里。
+CSV 本身容易编辑，但这个项目是纯静态网页，并支持直接双击 `index.html` 离线打开。浏览器出于安全限制，通常不允许这种页面直接读取旁边的 CSV；若使用 CSV，就必须要求使用者启动本地服务器，或加入额外的读取工具，会明显增加维护和使用复杂度。
 
-### `styles.css`
+因此 V2A 使用独立的 `products.js` 简单清单。它仍然是普通文本文件，可用记事本或 Visual Studio Code 编辑；网页也可以继续双击打开，不需要安装程序。请按照下面的复制、修改方式维护，不需要编程。
 
-相当于网页的“视觉设计”。颜色、字体、字号、留白、分栏、按钮样式和移动端布局都在这里。
+## 3. 如何维护产品资料？
 
-### `script.js`
+修改前，建议先复制一份 `products.js` 作为备份。用普通文本编辑器打开 `products.js`，会看到每个产品都是一段由 `{` 开始、由 `},` 结束的资料：
 
-相当于网页里很小的“工作逻辑”。它会在你点击 **Generate Content** 时读取输入内容，并把预先写好的示例句式与输入内容组合起来，再显示到 Pinterest Content 区域。
-
-### `README.md`
-
-项目说明文件，只用于阅读，不会影响网页的显示或运行。
-
-## 2. 网页如何工作？
-
-1. 在 **Product Information** 填写产品资料。
-2. 在 **Scene Planning** 填写目标人群和希望呈现的场景。
-3. 点击 **Generate Content**。
-4. 浏览器先检查必填项；如果有遗漏，会提示你完成该字段。
-5. 全部填写后，页面会在 **Pinterest Content** 中生成 Title、Description、Keywords 和 Image Prompt 的示例。
-
-这里的“生成”只是浏览器按照 `script.js` 中的固定句式进行文字拼接，不是真正的 AI 生成，也不会把任何资料发送到互联网。
-
-## 3. 以后如何修改？
-
-建议修改前先复制一份整个项目文件夹作为备份。代码编辑器可以使用 Visual Studio Code，普通文本编辑器也可以。
-
-### 修改页面文字
-
-打开 `index.html`，找到想改的英文文字并直接替换。例如：
-
-- 页面大标题：搜索 `Build a considered product story.`
-- 区域名称：搜索 `Product Information`、`Scene Planning` 或 `Pinterest Content`
-- 按钮文字：搜索 `Generate Content`
-- 输入提示：搜索以 `e.g.` 开始的文字
-
-请只修改 `<` 和 `>` 之间能够看懂的文字，不要随意删除尖括号中的标签。
-
-### 修改视觉
-
-打开 `styles.css`：
-
-- 页面主要颜色在文件最上方的 `:root` 区域。
-- `--paper` 是背景色。
-- `--ink` 是主要文字色。
-- `--muted` 是次要文字色。
-- `--accent` 是小标题与序号的强调色。
-- 搜索 `font-family` 可以修改字体。
-- 搜索 `font-size` 可以修改字号。
-- 搜索 `padding` 或 `gap` 可以修改留白和元素间距。
-
-颜色使用类似 `#f3f1ec` 的色号。修改一个色号并保存，再刷新浏览器即可看到效果。
-
-### 增加或删除产品字段
-
-产品字段在 `index.html` 的 **Product Information** 区域中。每个字段大致长这样：
-
-```html
-<label>
-  <span>Product Type</span>
-  <input name="productType" type="text" placeholder="e.g. Side table" required />
-</label>
+```js
+{
+  productId: "Philadelphia-13",
+  collection: "Philadelphia",
+  productType: "Decorative panel",
+  style: "Architectural minimalism",
+  name: "Philadelphia",
+  number: "13",
+  primaryColor: "Warm ivory",
+  secondaryColor: "Graphite",
+  customizationType: "Color and size",
+  productImage: "",
+},
 ```
 
-- 想删除字段：删除对应的完整 `<label> ... </label>`。
-- 想增加字段：复制一整段，再修改显示名称、`name` 和提示文字。
-- `required` 表示必填；删除这个词后，该字段会变成选填。
+### 增加一个产品
 
-如果希望新字段也出现在生成结果中，还需要在 `script.js` 里把它加入示例句式。`name="productType"` 会在脚本中对应 `data.productType`。两边名称必须保持一致。
+1. 完整复制一个现有产品，从 `{` 到 `},`，包括最后的英文逗号。
+2. 将复制内容粘贴在最后一个产品的 `},` 后、文件最末尾的 `];` 前。
+3. 修改双引号内的文字，保留字段名、冒号、双引号和逗号。
+4. `productId` 必须是唯一的，不可与其他产品重复。
+5. `collection` 拼写完全相同的产品会自动归入同一个 Collection。
+6. 保存文件并刷新网页，新产品就会出现在对应系列中。
 
-### 修改生成的示例文字
+### 删除一个产品
 
-打开 `script.js`，找到：
+找到该产品完整的 `{ ... },` 区块并删除。不要删除文件开头的 `const PRODUCT_LIBRARY = [` 或末尾的 `];`。保存并刷新网页即可。
 
-- `outputs.title`：标题句式
-- `outputs.description`：描述句式
-- `outputs.keywords`：关键词列表
-- `outputs.prompt`：图片提示词句式
+### 修改产品信息
 
-反引号中的 `${data.productName}` 等内容会自动替换为表单里填写的资料。普通英文则可以直接修改。
+找到对应的 `productId`，只修改目标字段双引号中的内容。例如把：
 
-## 4. 如何预览网页？
+```js
+primaryColor: "Warm ivory",
+```
 
-### 最简单的方法
+改成：
 
-1. 打开项目文件夹。
-2. 双击 `index.html`。
-3. 文件会在默认浏览器中打开。
-4. 修改文件并保存后，回到浏览器刷新页面即可看到变化。
+```js
+primaryColor: "Soft white",
+```
 
-这个方法不需要安装软件，也不需要联网。
+请使用英文半角双引号 `"` 和英文逗号 `,`。如果文字本身需要双引号，建议改用其他表达方式，以免破坏资料格式。
 
-### 使用本地预览服务器（可选）
+### Product Image 以后如何添加？
 
-如果电脑已经安装 Python，可以在终端进入项目文件夹并运行：
+目前 4 个测试产品的 `productImage` 都是空白，因此页面显示简洁的内置 Placeholder，不会调用任何外部图片。
+
+以后可在项目中新建 `images` 文件夹，将图片复制进去，并在相应产品填写相对路径。例如图片文件是 `images/philadelphia-13.jpg`：
+
+```js
+productImage: "images/philadelphia-13.jpg",
+```
+
+建议：
+
+- 使用 JPG、PNG 或 WebP 文件；
+- 文件名使用英文小写字母、数字和连字符，不使用空格；
+- 每个产品使用独立图片；
+- 图片保存在项目内，不填写外部网站地址，避免链接失效和隐私风险；
+- 路径和文件名（包括大小写）必须完全一致。
+
+## 4. 网页如何使用？
+
+1. 在 **Product Information** 选择 Collection。
+2. 再选择 Product，确认自动显示的资料和 Product Preview。
+3. 在 **Scene Planning** 填写 Target Audience 和 Scene。
+4. 点击 **Generate Content**。
+5. 在 **Pinterest Content** 查看 Title、Description、Keywords 和 Image Prompt 示例。
+
+这里的“生成”只是 `script.js` 按固定句式组合产品与场景资料，不是真正的 AI 生成，也不会向互联网发送资料。
+
+## 5. 如何预览？
+
+最简单的方式是双击 `index.html`。修改文件并保存后，回到浏览器刷新页面。
+
+如果电脑已安装 Python，也可以在项目文件夹运行：
 
 ```bash
 python3 -m http.server 8000
 ```
 
-然后在浏览器打开：
+再访问 `http://localhost:8000`。结束时在终端按 `Control + C`。
 
-```text
-http://localhost:8000
-```
+## 6. V2A 范围
 
-结束预览时，在终端按 `Control + C`。
+目前包含 Product Library、产品筛选和只读资料展示、Product Preview 占位、场景规划、必填检查、示例 Pinterest 内容生成，以及桌面与移动端布局。
 
-## 5. V1 的范围
-
-目前只包含：
-
-- 产品信息表单
-- 场景规划表单
-- 必填项检查
-- 示例 Pinterest 内容生成
-- 桌面端与移动端响应式布局
-
-目前不包含账号、资料保存、图片上传、AI 生成、Pinterest 发布或任何外部服务。这样可以让第一个版本保持简单、清晰并容易维护。
+目前不包含 Scene Library、账号、数据库、资料在线保存、图片上传、图片生成、OpenAI API、Pinterest API 或发布功能。项目中不需要、也不应加入 API Key、密码、Token 或第三方账号信息。
