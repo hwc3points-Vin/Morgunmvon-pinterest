@@ -6,19 +6,26 @@
 
 ## 1. Product Library 是什么？
 
-Product Library 是产品的统一资料清单。每个产品只需在清单中维护一次，使用网页时即可反复选择。选择 **Collection** 后，**Product** 只会列出该系列中的产品；选择 Product 后，页面会自动展示：
+Product Library 是产品的统一资料清单，只保存不会随每次内容任务改变的**固定产品资料**。每个产品只需维护一次，使用网页时即可反复选择。选择 **Collection** 后，**Product** 只会列出该系列中的产品；选择 Product 后，页面会自动展示：
 
 - Product ID
+- Collection
 - Product Type
-- Style
-- Name
-- Number
+- Design ID
 - Primary Color
 - Secondary Color
+- Material
+- Shape
+- Print Type
 - Customization Type
+- Available Sizes
 - Product Preview
 
-这些资料是只读展示，不需要使用者重复输入。点击 **Generate Content** 时，原有的示例文案逻辑也会使用当前选中产品的资料。
+这些资料是只读展示，不需要使用者重复输入。`TBD` 表示准确资料尚未提供，而不是推测出来的颜色。
+
+**Content Customization（内容定制）**中的 **Custom Name** 和 **Custom Number** 是每次内容生成任务临时填写的变量，不属于 Product Library，也不会写回或保存到产品资料。请特别注意：**Design ID 是内部设计编号，Custom Number 才是消费者希望印在产品上的号码，两者完全不同。**例如 `Philadelphia-13` 是 Design ID；它不表示消费者一定要定制数字 `13`，`Philadelphia` 也不是 Custom Name。
+
+点击 **Generate Content** 时，页面会同时读取当前选中产品的固定资料，以及本次填写的 Custom Name / Custom Number，再组合成 Pinterest 内容草稿。
 
 ## 2. 项目文件
 
@@ -44,14 +51,16 @@ CSV 本身容易编辑，但这个项目是纯静态网页，并支持直接双�
 ```js
 {
   productId: "Philadelphia-13",
-  collection: "Philadelphia",
-  productType: "Decorative panel",
-  style: "Architectural minimalism",
-  name: "Philadelphia",
-  number: "13",
-  primaryColor: "Warm ivory",
-  secondaryColor: "Graphite",
-  customizationType: "Color and size",
+  collection: "Personalized Football Pillows",
+  productType: "Football Pillow Cover",
+  designId: "Philadelphia-13",
+  primaryColor: "TBD",
+  secondaryColor: "TBD",
+  material: "Polyester short plush",
+  shape: "Square",
+  printType: "Double-sided print",
+  customizationType: "Custom Name + Number",
+  availableSizes: "12, 14, 16, 18, 20, 22, 24, 26 inches",
   productImage: "",
 },
 ```
@@ -63,7 +72,9 @@ CSV 本身容易编辑，但这个项目是纯静态网页，并支持直接双�
 3. 修改双引号内的文字，保留字段名、冒号、双引号和逗号。
 4. `productId` 必须是唯一的，不可与其他产品重复。
 5. `collection` 拼写完全相同的产品会自动归入同一个 Collection。
-6. 保存文件并刷新网页，新产品就会出现在对应系列中。
+6. `designId` 是内部设计编号，不要在这里填写消费者的 Custom Number。
+7. 不确定的固定资料请填写 `TBD`，不要猜测。
+8. 保存文件并刷新网页，新产品就会出现在对应系列中。
 
 ### 删除一个产品
 
@@ -74,13 +85,13 @@ CSV 本身容易编辑，但这个项目是纯静态网页，并支持直接双�
 找到对应的 `productId`，只修改目标字段双引号中的内容。例如把：
 
 ```js
-primaryColor: "Warm ivory",
+primaryColor: "TBD",
 ```
 
 改成：
 
 ```js
-primaryColor: "Soft white",
+primaryColor: "Confirmed color name",
 ```
 
 请使用英文半角双引号 `"` 和英文逗号 `,`。如果文字本身需要双引号，建议改用其他表达方式，以免破坏资料格式。
@@ -107,9 +118,10 @@ productImage: "images/philadelphia-13.jpg",
 
 1. 在 **Product Information** 选择 Collection。
 2. 再选择 Product，确认自动显示的资料和 Product Preview。
-3. 在 **Scene Planning** 填写 Target Audience 和 Scene。
-4. 点击 **Generate Content**。
-5. 在 **Pinterest Content** 查看 Title、Description、Keywords 和 Image Prompt 示例。
+3. 在 **Content Customization** 填写本次任务要使用的 Custom Name 和 Custom Number。这两个值只服务于本次内容，不会修改产品资料。
+4. 在 **Scene Planning** 填写 Target Audience 和 Scene。
+5. 点击 **Generate Content**；页面会读取选中产品的固定资料和本次定制变量。
+6. 在 **Pinterest Content** 查看 Title、Description、Keywords 和 Image Prompt 示例。
 
 这里的“生成”只是 `script.js` 按固定句式组合产品与场景资料，不是真正的 AI 生成，也不会向互联网发送资料。
 
@@ -127,6 +139,6 @@ python3 -m http.server 8000
 
 ## 6. V2A 范围
 
-目前包含 Product Library、产品筛选和只读资料展示、Product Preview 占位、场景规划、必填检查、示例 Pinterest 内容生成，以及桌面与移动端布局。
+目前包含 Product Library、产品筛选和只读资料展示、每次任务的 Custom Name / Custom Number、Product Preview 占位、场景规划、必填检查、示例 Pinterest 内容生成，以及桌面与移动端布局。
 
 目前不包含 Scene Library、账号、数据库、资料在线保存、图片上传、图片生成、OpenAI API、Pinterest API 或发布功能。项目中不需要、也不应加入 API Key、密码、Token 或第三方账号信息。
